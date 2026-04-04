@@ -47,7 +47,19 @@ def get_game(game_id: str, db: Session = Depends(get_db)):
     game = game_service.get_game_by_id(game_id, db)
     if not game:
         raise HTTPException(status_code=404, detail="Game not found")
-    return game
+    return GameDetailResponse(
+        id=game.id,
+        white=game.white,
+        black=game.black,
+        result=game.result,
+        opening=game.opening,
+        date_played=game.date_played,
+        source=game.source,
+        moves_count=len(game.moves),
+        pgn_raw=game.pgn_raw,
+        created_at=game.created_at,
+        moves=game.moves,
+    )
 
 
 @router.get("/", response_model=list[GameCreateResponse])
