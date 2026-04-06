@@ -178,3 +178,14 @@ def _detect_weaknesses(
         weaknesses.append("Frequent blunders")
 
     return weaknesses
+
+
+def save_report(player_name: str, report_text: str, db: Session) -> None:
+    """Saves the LLM report to the player's profile."""
+    profile = db.query(PlayerProfile).filter(
+        PlayerProfile.player_name == player_name
+    ).first()
+    if profile:
+        profile.report_text = report_text
+        profile.updated_at = datetime.utcnow()
+        db.commit()
