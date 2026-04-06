@@ -30,4 +30,20 @@ class GameDetailResponse(GameCreateResponse):
     moves: list[MoveSchema]
 
     model_config = {"from_attributes": True}
+
+
+class AnalysisResponse(BaseModel):
+    id: str
+    game_id: str
+    player_color: str
+    acpl: Optional[float]
+    acpl_opening: Optional[float]
+    acpl_middlegame: Optional[float]
+    acpl_endgame: Optional[float]
+    blunders: int
+    mistakes: int
+    inaccuracies: int
+    created_at: datetime
+
+    model_config = {"from_attributes": True}
     
