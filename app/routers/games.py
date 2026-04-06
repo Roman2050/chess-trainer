@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.services import game_service
 from app.models.schemas import GameCreateResponse, GameDetailResponse
+from app.utils.validators import validate_uuid
 
 router = APIRouter(prefix="/games", tags=["games"])
 
@@ -44,6 +45,7 @@ async def upload_pgn(
 @router.get("/{game_id}", response_model=GameDetailResponse)
 def get_game(game_id: str, db: Session = Depends(get_db)):
     """Returns a game with moves by ID."""
+    validate_uuid(game_id, "game_id")
     game = game_service.get_game_by_id(game_id, db)
     if not game:
         raise HTTPException(status_code=404, detail="Game not found")
