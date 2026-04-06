@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.services import analysis_service
 from app.models.schemas import AnalysisResponse
+from app.utils.validators import validate_uuid
 
 router = APIRouter(prefix="/analysis", tags=["analysis"])
 
@@ -19,6 +20,8 @@ def run_analysis(
     player_color: 'w' or 'b'
     Attention: Takes 30–90 seconds depending on the game length.
     """
+    validate_uuid(game_id, "game_id")
+
     if player_color not in ("w", "b"):
         raise HTTPException(status_code=400, detail="player_color must be 'w' or 'b'")
 
@@ -32,7 +35,8 @@ def run_analysis(
 
 @router.get("/{game_id}", response_model=AnalysisResponse)
 def get_analysis(game_id: str, db: Session = Depends(get_db)):
-    """Повертає збережений аналіз для партії."""
+    """Returns the saved analysis for the game."""
+    validate_uuid(game_id, "game_id")
     from app.models.db import Analysis
     analysis = db.query(Analysis).filter(Analysis.game_id == game_id).first()
     if not analysis:
