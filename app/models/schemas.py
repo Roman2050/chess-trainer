@@ -98,4 +98,10 @@ class PlayerProfileResponse(BaseModel):
             report_text=profile.report_text,
             updated_at=profile.updated_at,
         )
+
+
+class ReportResponse(BaseModel):
+    player_name: str
+    report_text: str
+    updated_at: datetime
     
