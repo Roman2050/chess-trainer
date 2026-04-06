@@ -34,6 +34,9 @@ def parse_pgn(pgn_text: str) -> ParsedGame:
 
     if game is None:
         raise ValueError("Invalid PGN: could not parse game")
+    
+    if not any(game.mainline()):
+        raise ValueError("Invalid PGN: game contains no moves")
 
     headers = game.headers
 
