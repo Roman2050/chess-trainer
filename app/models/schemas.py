@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 from datetime import date, datetime
 from typing import Optional
 
@@ -105,3 +105,47 @@ class ReportResponse(BaseModel):
     report_text: str
     updated_at: datetime
     
+
+class JobCreateRequest(BaseModel):
+    player_name: str
+    player_color: str = "w"
+    game_type: str = "rapid"
+    limit: int = 20
+
+    @field_validator("player_color")
+    @classmethod
+    def validate_color(cls, v):
+        if v not in ("w", "b"):
+            raise ValueError("player_color must be 'w' or 'b'")
+        return v
+
+    @field_validator("game_type")
+    @classmethod
+    def validate_game_type(cls, v):
+        valid = {"bullet", "blitz", "rapid", "classical"}
+        if v not in valid:
+            raise ValueError(f"game_type must be one of {valid}")
+        return v
+
+    @field_validator("limit")
+    @classmethod
+    def validate_limit(cls, v):
+        if not 1 <= v <= 40:
+            raise ValueError("limit must be between 1 and 40")
+        return v
+
+
+class JobResponse(BaseModel):
+    id: str
+    player_name: str
+    player_color: str
+    game_type: str
+    status: str
+    total_games: int
+    processed: int
+    failed: int
+    error: Optional[str]
+    created_at: datetime
+    updated_at: datetime
+
+    model_config = {"from_attributes": True}
