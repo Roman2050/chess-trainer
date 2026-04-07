@@ -77,3 +77,19 @@ class PlayerProfile(Base):
     report_text  = Column(Text, nullable=True)
     updated_at   = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     
+
+class AnalysisJob(Base):
+    __tablename__ = "analysis_jobs"
+
+    id           = Column(UUID(as_uuid=False), primary_key=True, default=gen_uuid)
+    player_name  = Column(String(100), nullable=False)
+    player_color = Column(String(1), nullable=False)   # 'w' | 'b'
+    source       = Column(String(50), default="lichess")
+    game_type    = Column(String(50), nullable=False)  # rapid | blitz | bullet | classical
+    status       = Column(String(20), default="pending")
+    total_games  = Column(Integer, default=0)
+    processed    = Column(Integer, default=0)
+    failed       = Column(Integer, default=0)
+    error        = Column(Text, nullable=True)
+    created_at   = Column(DateTime, default=datetime.utcnow)
+    updated_at   = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
