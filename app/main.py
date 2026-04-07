@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from app.routers import games
-from app.routers import games, analysis, profiles
+from app.routers import games, analysis, profiles, jobs
 
 app = FastAPI(
     title="Chess Trainer API",
@@ -11,6 +11,7 @@ app = FastAPI(
 app.include_router(games.router)
 app.include_router(analysis.router)
 app.include_router(profiles.router)
+app.include_router(jobs.router)
 
 
 @app.get("/health")
