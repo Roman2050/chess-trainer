@@ -62,14 +62,14 @@ def parse_pgn(pgn_text: str) -> ParsedGame:
         ))
 
     return ParsedGame(
-        pgn_raw=pgn_text.strip(),
-        white=headers.get("White") or None,
-        black=headers.get("Black") or None,
-        result=headers.get("Result") or None,
-        opening=headers.get("Opening") or None,
-        date_played=date_played,
-        moves=moves,
-    )
+    pgn_raw=pgn_text.strip(),
+    white=_clean_header(headers.get("White")),
+    black=_clean_header(headers.get("Black")),
+    result=_clean_header(headers.get("Result")),
+    opening=_clean_header(headers.get("Opening")),
+    date_played=date_played,
+    moves=moves,
+)
 
 
 def _parse_date(date_str: Optional[str]) -> Optional[date]:
@@ -86,3 +86,10 @@ def _parse_date(date_str: Optional[str]) -> Optional[date]:
     except (ValueError, IndexError):
         pass
     return None
+
+
+def _clean_header(value: str | None) -> str | None:
+    """Returns `None` if the value is missing or is the placeholder '?'."""
+    if not value or value == "?":
+        return None
+    return value
