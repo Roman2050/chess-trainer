@@ -41,7 +41,7 @@ class Move(Base):
     uci         = Column(String(10), nullable=False)
     san         = Column(String(10), nullable=False)
     fen_after   = Column(Text, nullable=True)
-    eval_cp     = Column(Integer, nullable=True)     # заповнюється після Stockfish
+    eval_cp     = Column(Integer, nullable=True)     # This will be populated in after Stockfish.
     best_move   = Column(String(10), nullable=True)
     created_at  = Column(DateTime, default=datetime.utcnow)
 
@@ -58,9 +58,9 @@ class Analysis(Base):
     acpl_opening    = Column(Float, nullable=True)
     acpl_middlegame = Column(Float, nullable=True)
     acpl_endgame    = Column(Float, nullable=True)
-    blunders        = Column(Integer, default=0)     # втрата > 200cp
-    mistakes        = Column(Integer, default=0)     # втрата 100–200cp
-    inaccuracies    = Column(Integer, default=0)     # втрата 50–100cp
+    blunders        = Column(Integer, default=0)     # loss > 200cp
+    mistakes        = Column(Integer, default=0)     # loss 100–200cp
+    inaccuracies    = Column(Integer, default=0)     # loss 50–100cp
     raw_json        = Column(JSONB, nullable=True)
     created_at      = Column(DateTime, default=datetime.utcnow)
 

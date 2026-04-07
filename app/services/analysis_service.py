@@ -82,7 +82,7 @@ def _update_moves(
     evaluations: list[MoveEvaluation],
     db: Session,
 ) -> None:
-    """Записує eval_cp та best_move у кожен хід."""
+    """Records eval_cp and best_move for each move."""
     for move, evaluation in zip(moves, evaluations):
         move.eval_cp = evaluation.eval_cp
         move.best_move = evaluation.best_move

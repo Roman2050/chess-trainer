@@ -40,7 +40,7 @@ def parse_pgn(pgn_text: str) -> ParsedGame:
 
     headers = game.headers
 
-    # Парсинг дати
+    # Date parsing
     date_played = _parse_date(headers.get("Date"))
 
     moves = []
