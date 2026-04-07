@@ -30,7 +30,7 @@ class AnalysisResult:
     inaccuracies: int
 
 
-def run_analysis(game_id: str, player_color: str, db: Session) -> Analysis:
+def run_analysis(game_id: str, player_color: str, db: Session, depth_override: int = None) -> Analysis:
     """
     Runs Stockfish analysis for a game.
     Saves results in analyses + updates moves.
@@ -46,7 +46,7 @@ def run_analysis(game_id: str, player_color: str, db: Session) -> Analysis:
     moves = sorted(game.moves, key=lambda m: m.move_number)
     moves_uci = [m.uci for m in moves]
 
-    evaluations = analyze_game(moves_uci)
+    evaluations = analyze_game(moves_uci, depth_override=depth_override)
 
     _update_moves(moves, evaluations, db)
 

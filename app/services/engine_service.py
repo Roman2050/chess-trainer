@@ -12,7 +12,7 @@ class MoveEvaluation:
     best_move: Optional[str] # Best move in this position
 
 
-def analyze_game(moves_uci: list[str]) -> list[MoveEvaluation]:
+def analyze_game(moves_uci: list[str], depth_override: int = None) -> list[MoveEvaluation]:
     """
     Analyzes a game with moves in UCI format.
     Returns evaluations and the best move for each position.
@@ -21,13 +21,15 @@ def analyze_game(moves_uci: list[str]) -> list[MoveEvaluation]:
     results = []
     board = chess.Board()
 
+    depth = depth_override or settings.engine_depth
+
     with chess.engine.SimpleEngine.popen_uci(settings.stockfish_path) as engine:
         for uci in moves_uci:
             move = chess.Move.from_uci(uci)
 
             info = engine.analyse(
                 board,
-                chess.engine.Limit(depth=settings.engine_depth),
+                chess.engine.Limit(depth=depth),
             )
 
             score = info["score"].white()
